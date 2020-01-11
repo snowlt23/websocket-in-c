@@ -1,0 +1,30 @@
+<html>
+<head>
+  <title>Websocket Client</title>
+</head>
+<body>
+  <input id="send-message"></input>
+  <button id="send-button">Send</button>
+  <script>
+    function updateStatus(msg) {
+      const el = document.createElement('div')
+      el.textContent = msg
+      document.body.appendChild(el)
+    }
+    const sock = new WebSocket('ws://localhost:8080/ws')
+    sock.addEventListener('open', (e) => {
+      updateStatus('Open')
+    })
+    sock.addEventListener('close', (e) => {
+      updateStatus('Close')
+    })
+    sock.addEventListener('message', (e) => {
+      updateStatus(e.data)
+    })
+    
+    document.querySelector('#send-button').addEventListener('click', (e) => {
+      sock.send(document.querySelector('#send-message').value)
+    })
+  </script>
+</body>
+</html>
